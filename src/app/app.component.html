@@ -1,0 +1,49 @@
+<div class="col-sm-4">
+  <div class="p-multiselect-main">
+    <div class="p-multiselect p-component p-multiselect-open p-multiselect-chip" (click)="toggleSelect()">
+      <div class="p-multiselect-label-container ">
+        <div class="p-multiselect-label" *ngIf="selectedItem && selectedItem.length > 0">
+          <div class="p-multiselect-token" *ngFor="let item of selectedItem">
+            <span class="p-multiselect-token-label">{{ item.name }}</span>
+            <span class="p-multiselect-token-icon pi pi-times-circle" (click)="onRemoveItem(item)"></span>
+          </div>
+        </div>
+        <div class="p-multiselect-label" *ngIf="selectedItem.length === 0">
+          <span class="p-label">Select a Country</span>
+        </div>
+      </div>
+      <div class="p-multiselect-trigger">
+        <span class="p-multiselect-trigger-icon pi pi-chevron-down"></span>
+      </div>
+    </div>
+    <div *ngIf="isOpenPopup" (isOutside)="hideDialog($event)" id="main-popup" class="ng-trigger ng-trigger-overlayAnimation p-multiselect-panel p-component" style="z-index: 1001; transform-origin: center bottom; top: -299px; left: 0px;">
+      <div class="p-multiselect-header">
+        <div class="p-checkbox p-component">
+          <p-checkbox name="masterSelected" value="m1" [binary]="true" [(ngModel)]="masterSelected" (onChange)="checkUncheckAll($event.checked)"></p-checkbox>
+        </div>
+        <div class="p-multiselect-filter-container">
+          <input pInputText placeholder="Enter search here.." class="form-control" name="textSearch" [(ngModel)]="textSearch" (keyup)="onChangeText($event)" />
+          <span class="p-multiselect-filter-icon pi pi-search "></span>
+        </div>
+        <button type="button" class="p-multiselect-close p-linkp-ripple" (click)="isOpenPopup = false">
+          <span class="p-multiselect-close-icon pi pi-times"></span><span class="p-ink"></span>
+        </button>
+      </div>
+      <div class="p-multiselect-items-wrapper" *ngIf="listItem.length > 0">
+        <ul role="listbox" aria-multiselectable="true" class="p-multiselect-items p-component ">
+          <li class="p-multiselect-item-group" *ngFor="let item of listItem; let i = index">
+            <div class="p-d-flex p-ai-center ">
+              <p-checkbox id="cb_{{ i }}" value="{{ item.checked }}" name="cb_{{ i }}" (onChange)="isCheckedParent(item, $event.checked)" [(ngModel)]="item.checked" class="multi-cb" [binary]="true"></p-checkbox>
+              <label for="cb_{{ i }}">{{ item.name }}</label>
+            </div>
+            <div p-multiselectitem class="p-d-flex p-ai-center p-multiselect-item" *ngFor="let sub of item.items;let subId = index">
+              <p-checkbox name="cb_sub_item_{{ subId }}" value="{{ sub.checked }}" (onChange)="isCheckedChildren(sub, $event.checked)" [(ngModel)]="sub.checked" class="multi-cb" [binary]="true"></p-checkbox>
+              <span>{{ sub.name }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
